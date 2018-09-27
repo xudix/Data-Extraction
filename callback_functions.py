@@ -444,5 +444,6 @@ def plot2(self, startDateTime, endDateTime, tagList, fileList, interval=1):
     plt.yticks(fontsize = 3)
     plt.grid(True)
     plt.tight_layout()
+    plt.show(block = False)
     
     return fig

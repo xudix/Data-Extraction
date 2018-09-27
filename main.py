@@ -7,18 +7,18 @@ Created on Sun Sep  2 03:31:20 2018
 Data extraction and visulization tool
 Based on the contribution of Miguel Petrarca
 '''
-import matplotlib
-matplotlib.use('TkAgg', warn=False, force=True)
+#import matplotlib
+#matplotlib.use('TkAgg', warn=False, force=True)
 
 import tkinter as tk
 from tkinter.filedialog import askopenfilenames
 from tkinter.messagebox import showerror
 import os.path
-import datetime
+#import datetime
 
 import callback_functions
 import pick_tag
-import plotting
+#import plotting
 
 
 # class for Main window
@@ -37,6 +37,10 @@ class MainWindow(tk.Frame):
         self.grid(sticky = tk.N+tk.S+tk.E+tk.W)
         # Method to create widgets
         self.createWidgets()
+        # Register the behavior of some keys
+        topLevelWindow.protocol("WM_DELETE_WINDOW", self.exitMethod)
+        topLevelWindow.bind("<Return>", self.plot)
+        topLevelWindow.bind("<Escape>", self.exitMethod)
         # Set blank file paths for tags and data
         self.tagFileName = 'TagList'
         self.filePath = '/'
@@ -116,7 +120,7 @@ class MainWindow(tk.Frame):
                 self.fileEditBox.insert(tk.END, item+'\n')
         
         
-    def plot(self):
+    def plot(self, event = None):
         # Take the inputs from user, and 
         try:
             callback_functions.parseInput(self)
@@ -130,6 +134,9 @@ class MainWindow(tk.Frame):
         # Alternative method, use the pyplot module
         self.plotWindows.append(callback_functions.plot2(self, self.startDateTime, self.endDateTime, self.tagList, self.fileList))
 
+    def exitMethod(self, event = None):
+        self.quit()
+        self.winfo_toplevel().destroy()
         
 
 app  =  MainWindow()
